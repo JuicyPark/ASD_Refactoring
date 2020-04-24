@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class FieldManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField]
+    TouchController touchController;
+
+    [SerializeField]
+    TileManager tileManager;
+
     void Start()
     {
-        
+        BindEvents();
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDestroy()
     {
-        
+        UnBindEvents();
+    }
+
+    void BindEvents()
+    {
+        touchController.SwipedScreen += tileManager.SelectTiles;
+    }
+
+    void UnBindEvents()
+    {
+        touchController.SwipedScreen -= tileManager.SelectTiles;
     }
 }
