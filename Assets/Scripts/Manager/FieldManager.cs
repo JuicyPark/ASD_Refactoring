@@ -22,11 +22,17 @@ public class FieldManager : MonoBehaviour
 
     void BindEvents()
     {
-        touchController.SwipedScreen += tileManager.SelectTiles;
+        touchController.BeganTouching += tileManager.SelectTile;
+        touchController.EndedTouching += tileManager.CreateAnimal;
+        touchController.SwipedTouching += tileManager.SelectTiles;
+        tileManager.CompletedMove += touchController.SetTouchable;
     }
 
     void UnBindEvents()
     {
-        touchController.SwipedScreen -= tileManager.SelectTiles;
+        touchController.BeganTouching -= tileManager.SelectTile;
+        touchController.EndedTouching -= tileManager.CreateAnimal;
+        touchController.SwipedTouching -= tileManager.SelectTiles;
+        tileManager.CompletedMove -= touchController.SetTouchable;
     }
 }
