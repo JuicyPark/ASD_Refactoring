@@ -8,7 +8,7 @@ public class FieldManager : MonoBehaviour
     TouchController touchController;
 
     [SerializeField]
-    TileManager tileManager;
+    TileContainer tileManager;
 
     void Start()
     {

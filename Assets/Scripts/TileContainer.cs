@@ -2,13 +2,13 @@
 using UnityEngine;
 using System;
 
-public class TileManager : MonoBehaviour
+public class TileContainer : MonoBehaviour
 {
     public Action CompletedMove;
 
-    [SerializeField]
-    Tile[] tiles;
 
+    [SerializeField]
+    Tile tilePrefab;
     Tile selectedTile;
 
     [SerializeField]
@@ -17,6 +17,7 @@ public class TileManager : MonoBehaviour
     int columCount = 7;
     Tile[] rowTiles;
     Tile[] columTiles;
+    Tile[] tiles;
 
     [SerializeField]
     Transform swipeContainer;
@@ -81,6 +82,23 @@ public class TileManager : MonoBehaviour
     {
         rowTiles = new Tile[rowCount];
         columTiles = new Tile[columCount];
+        tiles = new Tile[rowCount * columCount];
+
+        int tileIndex = 0;
+        for(int i = 0; i< columCount;i++)
+        {
+            for(int j = 0; j< rowCount;j++)
+            {
+                Vector3 tilePosition = new Vector3(j, 0, i);
+                Tile tile = Instantiate(tilePrefab, tilePosition, Quaternion.Euler(90f,0,0),transform);
+
+                tile.xIndex = j;
+                tile.zIndex = i;
+
+                tiles[tileIndex] = tile;
+                tileIndex++;
+            }
+        }
     }
 
     void ChangeTileIndex(Direction direction)
@@ -93,7 +111,7 @@ public class TileManager : MonoBehaviour
                 if (tile.zIndex >= columTiles.Length)
                 {
                     tile.zIndex = 0;
-                    tile.transform.position = Vector3.right * tile.transform.position.x + Vector3.forward * -1;
+                    tile.transform.position = Vector3.right * tile.transform.position.x + Vector3.forward * -1 + Vector3.forward * transform.position.z;
                 }
             }
         }
@@ -105,7 +123,7 @@ public class TileManager : MonoBehaviour
                 if (tile.zIndex < 0)
                 {
                     tile.zIndex = columTiles.Length - 1;
-                    tile.transform.position = Vector3.right * tile.transform.position.x + Vector3.forward * columTiles.Length;
+                    tile.transform.position = Vector3.right * tile.transform.position.x + Vector3.forward * columTiles.Length + Vector3.forward * transform.position.z;
                 }
             }
         }
@@ -117,7 +135,7 @@ public class TileManager : MonoBehaviour
                 if (tile.xIndex < 0)
                 {
                     tile.xIndex = rowTiles.Length - 1;
-                    tile.transform.position = Vector3.forward * tile.transform.position.z + Vector3.right * rowTiles.Length;
+                    tile.transform.position = Vector3.forward * tile.transform.position.z + Vector3.right * rowTiles.Length + Vector3.right * transform.position.x;
                 }
             }
         }
@@ -129,9 +147,24 @@ public class TileManager : MonoBehaviour
                 if (tile.xIndex >= rowTiles.Length)
                 {
                     tile.xIndex = 0;
-                    tile.transform.position = Vector3.forward * tile.transform.position.z + Vector3.right * -1; ;
+                    tile.transform.position = Vector3.forward * tile.transform.position.z + Vector3.right * -1 + Vector3.right * transform.position.x;
                 }
             }
+        }
+    }
+
+    void InitTiles(Direction direction)
+    {
+        selectedTile = null;
+        if(direction == Direction.DOWN || direction == Direction.UP)
+        {
+            for(int i = 0; i < columTiles.Length;i++)
+                columTiles[i] = null;
+        }
+        else if(direction == Direction.LEFT || direction == Direction.RIGHT)
+        {
+            for (int i = 0; i < rowTiles.Length; i++)
+                rowTiles[i] = null;
         }
     }
 
@@ -167,6 +200,7 @@ public class TileManager : MonoBehaviour
             ContainToTransform(transform, columTiles);
         else if (direction == Direction.LEFT || direction == Direction.RIGHT)
             ContainToTransform(transform, rowTiles);
+        InitTiles(direction);
         CompletedMove?.Invoke();
     }
 }
