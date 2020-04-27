@@ -7,5 +7,10 @@ public class Tile : MonoBehaviour
     public int xIndex;
     public int zIndex;
 
-    bool isActivate;
+    public int level;
+    public int unitIndex;
+
+    public Unit unit;
+    
+    public SpriteRenderer spriteRenderer;
 }
