@@ -23,7 +23,7 @@ public class FieldManager : MonoBehaviour
     void BindEvents()
     {
         touchController.BeganTouching += tileManager.SelectTile;
-        touchController.EndedTouching += tileManager.CreateAnimal;
+        touchController.EndedTouching += tileManager.TouchTile;
         touchController.SwipedTouching += tileManager.SelectTiles;
         tileManager.CompletedMove += touchController.SetTouchable;
     }
@@ -31,7 +31,7 @@ public class FieldManager : MonoBehaviour
     void UnBindEvents()
     {
         touchController.BeganTouching -= tileManager.SelectTile;
-        touchController.EndedTouching -= tileManager.CreateAnimal;
+        touchController.EndedTouching -= tileManager.TouchTile;
         touchController.SwipedTouching -= tileManager.SelectTiles;
         tileManager.CompletedMove -= touchController.SetTouchable;
     }

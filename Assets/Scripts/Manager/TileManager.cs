@@ -1,25 +1,30 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System;
+using UnityEditor.Rendering;
 
 public class TileManager : MonoBehaviour
 {
     public Action CompletedMove;
 
     [SerializeField]
-    Tile[] tiles;
-
+    Tile tilePrefab;
     Tile selectedTile;
 
     [SerializeField]
     int rowCount = 7;
     [SerializeField]
     int columCount = 7;
+
     Tile[] rowTiles;
     Tile[] columTiles;
+    Tile[] tiles;
 
     [SerializeField]
     Transform swipeContainer;
+
+    [SerializeField]
+    LayerMask blockLayerMask;
 
     public void SelectTile(Vector3 position)
     {
@@ -32,10 +37,10 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public void CreateAnimal()
+    public void TouchTile()
     {
         CompletedMove?.Invoke();
-
+        ActivateTile();
     }
 
     public void SelectTiles(Direction direction)
@@ -81,6 +86,23 @@ public class TileManager : MonoBehaviour
     {
         rowTiles = new Tile[rowCount];
         columTiles = new Tile[columCount];
+        tiles = new Tile[rowCount * columCount];
+
+        int tileIndex = 0;
+        for (int i = 0; i < columCount; i++)
+        {
+            for (int j = 0; j < rowCount; j++)
+            {
+                Vector3 tilePosition = new Vector3(j, 0, i);
+                Tile tile = Instantiate(tilePrefab, tilePosition, Quaternion.Euler(90f, 0, 0), transform);
+
+                tile.xIndex = j;
+                tile.zIndex = i;
+
+                tiles[tileIndex] = tile;
+                tileIndex++;
+            }
+        }
     }
 
     void ChangeTileIndex(Direction direction)
@@ -93,7 +115,7 @@ public class TileManager : MonoBehaviour
                 if (tile.zIndex >= columTiles.Length)
                 {
                     tile.zIndex = 0;
-                    tile.transform.position = Vector3.right * tile.transform.position.x + Vector3.forward * -1;
+                    tile.transform.position = Vector3.right * tile.transform.position.x + Vector3.forward * -1 + Vector3.forward * transform.position.z;
                 }
             }
         }
@@ -105,7 +127,7 @@ public class TileManager : MonoBehaviour
                 if (tile.zIndex < 0)
                 {
                     tile.zIndex = columTiles.Length - 1;
-                    tile.transform.position = Vector3.right * tile.transform.position.x + Vector3.forward * columTiles.Length;
+                    tile.transform.position = Vector3.right * tile.transform.position.x + Vector3.forward * columTiles.Length + Vector3.forward * transform.position.z;
                 }
             }
         }
@@ -117,7 +139,7 @@ public class TileManager : MonoBehaviour
                 if (tile.xIndex < 0)
                 {
                     tile.xIndex = rowTiles.Length - 1;
-                    tile.transform.position = Vector3.forward * tile.transform.position.z + Vector3.right * rowTiles.Length;
+                    tile.transform.position = Vector3.forward * tile.transform.position.z + Vector3.right * rowTiles.Length + Vector3.right * transform.position.x;
                 }
             }
         }
@@ -129,9 +151,24 @@ public class TileManager : MonoBehaviour
                 if (tile.xIndex >= rowTiles.Length)
                 {
                     tile.xIndex = 0;
-                    tile.transform.position = Vector3.forward * tile.transform.position.z + Vector3.right * -1; ;
+                    tile.transform.position = Vector3.forward * tile.transform.position.z + Vector3.right * -1 + Vector3.right * transform.position.x;
                 }
             }
+        }
+    }
+
+    void InitTiles(Direction direction)
+    {
+        selectedTile = null;
+        if (direction == Direction.DOWN || direction == Direction.UP)
+        {
+            for (int i = 0; i < columTiles.Length; i++)
+                columTiles[i] = null;
+        }
+        else if (direction == Direction.LEFT || direction == Direction.RIGHT)
+        {
+            for (int i = 0; i < rowTiles.Length; i++)
+                rowTiles[i] = null;
         }
     }
 
@@ -154,6 +191,72 @@ public class TileManager : MonoBehaviour
         return Vector3.zero;
     }
 
+    Tile FindNearSameTile()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(selectedTile.transform.position, 0.5f, blockLayerMask);
+        foreach (var nearTileCollider in hitColliders)
+        {
+            Tile nearTile = nearTileCollider.GetComponent<Tile>();
+            if (nearTile == selectedTile)
+                continue;
+
+            if (nearTile.level == selectedTile.level && nearTile.unitIndex == selectedTile.unitIndex)
+            {
+                return nearTile;
+            }
+        }
+        return null;
+    }
+
+    void SetUnit(int unitIndex)
+    {
+        if (selectedTile.unit != null)
+            Destroy(selectedTile.unit.gameObject);
+        selectedTile.spriteRenderer.sprite = UnitManager.Instance.levelUnitDatas[selectedTile.level].unitSprites[unitIndex];
+        selectedTile.unit = Instantiate(UnitManager.Instance.levelUnitDatas[selectedTile.level].unitPrefabs[unitIndex], selectedTile.transform.position, Quaternion.identity, selectedTile.transform);
+        selectedTile.unit.gameObject.SetActive(false);
+    }
+
+    void InitTile(Tile tile)
+    {
+        if (tile.unit != null)
+            Destroy(tile.unit.gameObject);
+        tile.spriteRenderer.sprite = UnitManager.Instance.noneSelectSprite;
+        tile.level = 0;
+    }
+
+    void CreateUnit()
+    {
+        selectedTile.level++;
+        selectedTile.unitIndex = UnityEngine.Random.Range(0, UnitManager.Instance.levelUnitDatas[selectedTile.level].unitSprites.Length);
+        SetUnit(selectedTile.unitIndex);
+    }
+
+    void MergeUnit(Tile nearTile)
+    {
+        InitTile(nearTile);
+        CreateUnit();
+    }
+
+    void ActivateTile()
+    {
+        if (selectedTile.level >= UnitManager.Instance.levelUnitDatas.Length - 1)
+            return;
+
+        if (selectedTile.level == 0)
+        {
+            CreateUnit();
+        }
+        else
+        {
+            Tile nearTile = FindNearSameTile();
+            if (nearTile != null)
+            {
+                MergeUnit(nearTile);
+            }
+        }
+    }
+
     IEnumerator CMoveSwipeContainer(Direction direction)
     {
         Vector3 vector = ParseDirectionToVector(direction);
@@ -167,6 +270,7 @@ public class TileManager : MonoBehaviour
             ContainToTransform(transform, columTiles);
         else if (direction == Direction.LEFT || direction == Direction.RIGHT)
             ContainToTransform(transform, rowTiles);
+        InitTiles(direction);
         CompletedMove?.Invoke();
     }
 }
