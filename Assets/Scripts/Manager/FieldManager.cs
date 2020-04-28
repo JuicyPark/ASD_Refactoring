@@ -10,9 +10,6 @@ public class FieldManager : MonoBehaviour
     [SerializeField]
     TileContainer tileContainer;
 
-    [SerializeField]
-    ResourceManager resourceManager;
-
     void Start()
     {
         BindEvents();

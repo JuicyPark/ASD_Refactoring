@@ -54,6 +54,11 @@ public class TileContainer : MonoBehaviour
             return;
         }
 
+        if (!ResourceManager.Instance.TileMoveable())
+            return;
+
+        ResourceManager.Instance.UseStep();
+
         if (direction == Direction.UP || direction == Direction.DOWN)
         {
             int tileIndex = 0;
@@ -249,6 +254,10 @@ public class TileContainer : MonoBehaviour
 
         if (selectedTile.level == 0)
         {
+            if (!ResourceManager.Instance.UnitCreatable())
+                return;
+
+            ResourceManager.Instance.UseGold();
             CreateUnit();
         }
         else

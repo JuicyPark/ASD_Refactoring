@@ -12,5 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59a9601e7352f2e43a607c5983e941a2, type: 3}
   m_Name: UnitData
   m_EditorClassIdentifier: 
-  noneSelectTileSprite: {fileID: 0}
-  LevelUnitDatas: []
+  noneSelectTileSprite: {fileID: 21300000, guid: 4c7a8c65cb4be754bbbcdb5964afc208,
+    type: 3}
+  LevelUnitDatas:
+  - unitSprites: []
+    unitPrefabs: []
+  - unitSprites:
+    - {fileID: 21300000, guid: 48c831eb06cb7f142a1696186221a510, type: 3}
+    - {fileID: 21300000, guid: 2f8b20940a1e5444bbb65c767d7a2df4, type: 3}
+    - {fileID: 21300000, guid: 7b7ce752a94fc66499306b42fc04f5c5, type: 3}
+    - {fileID: 21300000, guid: 78cbe796e2aeacb4b8fb6c65c9c21946, type: 3}
+    - {fileID: 21300000, guid: bec38ff3317ae1b4bb7a603af84202c5, type: 3}
+    - {fileID: 21300000, guid: 9d407f71ecd03474a8ee4a0fcb04fd7d, type: 3}
+    - {fileID: 21300000, guid: 8bf062012cafeb545bce7152610465f6, type: 3}
+    unitPrefabs:
+    - {fileID: 2286113304008237742, guid: f04aae84c784f7e48b4a72c96bba90f7, type: 3}
+    - {fileID: 1548534122559515531, guid: 1b17d7851b63ea84386c4f97b163e7a4, type: 3}
+    - {fileID: 8274992806040035105, guid: aba1bc622e5c62045b6bcb417fa49a6f, type: 3}
+    - {fileID: 9098375165007805749, guid: 3eca2913297d2e347830b62f6c01ee30, type: 3}
+    - {fileID: 8123871643774380992, guid: d9cf33595ec6d204bb22d132774352b0, type: 3}
+    - {fileID: 2713337365526171859, guid: 8ec7ece9c691d5a429d5ba41824e3f48, type: 3}
+    - {fileID: 1400702161414148501, guid: 2a8d5d175583ce642ade6f91d50a56b3, type: 3}
+  - unitSprites:
+    - {fileID: 21300000, guid: fd1d24e1389f6b7419e6dad295c6e453, type: 3}
+    - {fileID: 21300000, guid: 0443d9572c2aafe4c8dd221edcc779b0, type: 3}
+    - {fileID: 21300000, guid: dc56ec030a88907408700793ca054d8a, type: 3}
+    - {fileID: 21300000, guid: 54c639569de04a84eb16b02bddc821ab, type: 3}
+    - {fileID: 21300000, guid: 18758fff59004ee4b903c00657fd14d7, type: 3}
+    - {fileID: 21300000, guid: f9f18b89b5f2a224e8e2352a73e1258d, type: 3}
+    - {fileID: 21300000, guid: 3025031338b5c684d9319ad13d26d929, type: 3}
+    unitPrefabs:
+    - {fileID: 7048841305209599713, guid: 69750c7dfdc06244d91c7df771015be9, type: 3}
+    - {fileID: 6742643390617550076, guid: a0fc7efcc985d7e40ad90d079c3d7f38, type: 3}
+    - {fileID: 134677879526588795, guid: ad519f96b1f2be14a9e160b136277294, type: 3}
+    - {fileID: 3497256038638678361, guid: a31453edda929ba49b290125e24639c8, type: 3}
+    - {fileID: 7389867250616415806, guid: aef38c0b5437cce44be37c70d48991c5, type: 3}
+    - {fileID: 6745740373435166894, guid: 8a59888d7cd4d7844a62255a4346c498, type: 3}
+    - {fileID: 3840048592048067303, guid: 12d2480db5799a744acec2348583114d, type: 3}

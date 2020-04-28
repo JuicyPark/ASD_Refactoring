@@ -2,8 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceManager : MonoBehaviour
+public class ResourceManager : Singleton<ResourceManager>
 {
-    int gold;
-    int step;
+    public int gold = 20;
+    public int step = 20;
+
+    [SerializeField]
+    int goldCost = 5;
+    [SerializeField]
+    int stepCost = 1;
+
+    public void UseGold() => gold -= goldCost;
+
+    public void UseStep() => step -= stepCost;
+
+    public bool UnitCreatable()
+    {
+        return gold >= goldCost;
+    }
+
+    public bool TileMoveable()
+    {
+        return step >= stepCost;
+    }
 }
