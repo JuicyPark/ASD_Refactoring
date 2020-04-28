@@ -254,14 +254,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 853618357}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0a7eee004362fa4ebe36ded70cbd631, type: 3}
+  m_Script: {fileID: 11500000, guid: f1a2cf2ea956b1e4a8796aef5e707def, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noneSelectSprite: {fileID: 21300000, guid: 4c7a8c65cb4be754bbbcdb5964afc208, type: 3}
-  levelUnitDatas:
-  - {fileID: 0}
-  - {fileID: 11400000, guid: e2d86134c99be494292aef4ed3096114, type: 2}
-  - {fileID: 11400000, guid: d722d983098efe94cbcddc4622dbb78f, type: 2}
+  gold: 20
+  step: 20
+  goldCost: 5
+  stepCost: 1
 --- !u!114 &853618359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchController: {fileID: 853618361}
-  tileManager: {fileID: 651877177}
+  tileContainer: {fileID: 651877177}
 --- !u!4 &853618360
 Transform:
   m_ObjectHideFlags: 0
@@ -439,5 +438,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileContainer
       objectReference: {fileID: 0}
+    - target: {fileID: 8294788326894883906, guid: 1e0fea5f994623f43be715829a32e569,
+        type: 3}
+      propertyPath: unitData
+      value: 
+      objectReference: {fileID: 11400000, guid: 2cf436c093aa5ba469c6bb6b73d15ff5,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e0fea5f994623f43be715829a32e569, type: 3}
