@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59a9601e7352f2e43a607c5983e941a2, type: 3}
-  m_Name: Level5
+  m_Name: UnitData
   m_EditorClassIdentifier: 
-  unitSprites: []
-  unitPrefabs: []
+  noneSelectTileSprite: {fileID: 0}
+  LevelUnitDatas: []

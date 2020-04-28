@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using UnityEditor.Rendering;
 
-public class TileManager : MonoBehaviour
+public class TileContainer : MonoBehaviour
 {
     public Action CompletedMove;
 
@@ -25,6 +25,9 @@ public class TileManager : MonoBehaviour
 
     [SerializeField]
     LayerMask blockLayerMask;
+
+    [SerializeField]
+    UnitData unitData;
 
     public void SelectTile(Vector3 position)
     {
@@ -212,8 +215,9 @@ public class TileManager : MonoBehaviour
     {
         if (selectedTile.unit != null)
             Destroy(selectedTile.unit.gameObject);
-        selectedTile.spriteRenderer.sprite = UnitManager.Instance.levelUnitDatas[selectedTile.level].unitSprites[unitIndex];
-        selectedTile.unit = Instantiate(UnitManager.Instance.levelUnitDatas[selectedTile.level].unitPrefabs[unitIndex], selectedTile.transform.position, Quaternion.identity, selectedTile.transform);
+        selectedTile.spriteRenderer.sprite = unitData.LevelUnitDatas[selectedTile.level].unitSprites[unitIndex];
+
+        selectedTile.unit = Instantiate(unitData.LevelUnitDatas[selectedTile.level].unitPrefabs[unitIndex], selectedTile.transform.position, Quaternion.identity, selectedTile.transform);
         selectedTile.unit.gameObject.SetActive(false);
     }
 
@@ -221,14 +225,14 @@ public class TileManager : MonoBehaviour
     {
         if (tile.unit != null)
             Destroy(tile.unit.gameObject);
-        tile.spriteRenderer.sprite = UnitManager.Instance.noneSelectSprite;
+        tile.spriteRenderer.sprite = unitData.noneSelectTileSprite;
         tile.level = 0;
     }
 
     void CreateUnit()
     {
         selectedTile.level++;
-        selectedTile.unitIndex = UnityEngine.Random.Range(0, UnitManager.Instance.levelUnitDatas[selectedTile.level].unitSprites.Length);
+        selectedTile.unitIndex = UnityEngine.Random.Range(0, unitData.LevelUnitDatas[selectedTile.level].unitSprites.Length);
         SetUnit(selectedTile.unitIndex);
     }
 
@@ -240,7 +244,7 @@ public class TileManager : MonoBehaviour
 
     void ActivateTile()
     {
-        if (selectedTile.level >= UnitManager.Instance.levelUnitDatas.Length - 1)
+        if (selectedTile.level >= unitData.LevelUnitDatas.Length - 1)
             return;
 
         if (selectedTile.level == 0)

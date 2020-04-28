@@ -8,7 +8,10 @@ public class FieldManager : MonoBehaviour
     TouchController touchController;
 
     [SerializeField]
-    TileManager tileManager;
+    TileContainer tileContainer;
+
+    [SerializeField]
+    ResourceManager resourceManager;
 
     void Start()
     {
@@ -22,17 +25,17 @@ public class FieldManager : MonoBehaviour
 
     void BindEvents()
     {
-        touchController.BeganTouching += tileManager.SelectTile;
-        touchController.EndedTouching += tileManager.TouchTile;
-        touchController.SwipedTouching += tileManager.SelectTiles;
-        tileManager.CompletedMove += touchController.SetTouchable;
+        touchController.BeganTouching += tileContainer.SelectTile;
+        touchController.EndedTouching += tileContainer.TouchTile;
+        touchController.SwipedTouching += tileContainer.SelectTiles;
+        tileContainer.CompletedMove += touchController.SetTouchable;
     }
 
     void UnBindEvents()
     {
-        touchController.BeganTouching -= tileManager.SelectTile;
-        touchController.EndedTouching -= tileManager.TouchTile;
-        touchController.SwipedTouching -= tileManager.SelectTiles;
-        tileManager.CompletedMove -= touchController.SetTouchable;
+        touchController.BeganTouching -= tileContainer.SelectTile;
+        touchController.EndedTouching -= tileContainer.TouchTile;
+        touchController.SwipedTouching -= tileContainer.SelectTiles;
+        tileContainer.CompletedMove -= touchController.SetTouchable;
     }
 }
