@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FieldManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     [SerializeField]
     TouchController touchController;
