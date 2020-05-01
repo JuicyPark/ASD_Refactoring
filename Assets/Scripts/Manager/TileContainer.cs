@@ -12,9 +12,9 @@ public class TileContainer : MonoBehaviour
     Tile selectedTile;
 
     [SerializeField]
-    int rowCount = 7;
+    int rowSize = 7;
     [SerializeField]
-    int columCount = 7;
+    int columSize = 7;
 
     Tile[] rowTiles;
     Tile[] columTiles;
@@ -28,6 +28,9 @@ public class TileContainer : MonoBehaviour
 
     [SerializeField]
     UnitData unitData;
+
+    [SerializeField]
+    ArrowContainer arrowContainer;
 
     public void SelectTile(Vector3 position)
     {
@@ -43,7 +46,9 @@ public class TileContainer : MonoBehaviour
     public void TouchTile()
     {
         CompletedMove?.Invoke();
-        ActivateTile();
+
+        if (selectedTile != null)
+            ActivateTile();
     }
 
     public void SelectTiles(Direction direction)
@@ -92,14 +97,14 @@ public class TileContainer : MonoBehaviour
 
     void Start()
     {
-        rowTiles = new Tile[rowCount];
-        columTiles = new Tile[columCount];
-        tiles = new Tile[rowCount * columCount];
+        rowTiles = new Tile[rowSize];
+        columTiles = new Tile[columSize];
+        tiles = new Tile[rowSize * columSize];
 
         int tileIndex = 0;
-        for (int i = 0; i < columCount; i++)
+        for (int i = 0; i < columSize; i++)
         {
-            for (int j = 0; j < rowCount; j++)
+            for (int j = 0; j < rowSize; j++)
             {
                 Vector3 tilePosition = new Vector3(j, 0, i);
                 Tile tile = Instantiate(tilePrefab, tilePosition, Quaternion.Euler(90f, 0, 0), transform);
@@ -111,6 +116,9 @@ public class TileContainer : MonoBehaviour
                 tileIndex++;
             }
         }
+
+        arrowContainer.GetTileSize(rowSize, columSize);
+        arrowContainer.SetArrowPosition();
     }
 
     void ChangeTileIndex(Direction direction)
@@ -123,7 +131,8 @@ public class TileContainer : MonoBehaviour
                 if (tile.zIndex >= columTiles.Length)
                 {
                     tile.zIndex = 0;
-                    tile.transform.position = Vector3.right * tile.transform.position.x + Vector3.forward * -1 + Vector3.forward * transform.position.z;
+                    tile.transform.position = Vector3.right * tile.transform.position.x
+                        + Vector3.forward * -1 + Vector3.forward * transform.position.z;
                 }
             }
         }
@@ -135,7 +144,8 @@ public class TileContainer : MonoBehaviour
                 if (tile.zIndex < 0)
                 {
                     tile.zIndex = columTiles.Length - 1;
-                    tile.transform.position = Vector3.right * tile.transform.position.x + Vector3.forward * columTiles.Length + Vector3.forward * transform.position.z;
+                    tile.transform.position = Vector3.right * tile.transform.position.x
+                        + Vector3.forward * columTiles.Length + Vector3.forward * transform.position.z;
                 }
             }
         }
@@ -147,7 +157,8 @@ public class TileContainer : MonoBehaviour
                 if (tile.xIndex < 0)
                 {
                     tile.xIndex = rowTiles.Length - 1;
-                    tile.transform.position = Vector3.forward * tile.transform.position.z + Vector3.right * rowTiles.Length + Vector3.right * transform.position.x;
+                    tile.transform.position = Vector3.forward * tile.transform.position.z
+                        + Vector3.right * rowTiles.Length + Vector3.right * transform.position.x;
                 }
             }
         }
@@ -159,7 +170,8 @@ public class TileContainer : MonoBehaviour
                 if (tile.xIndex >= rowTiles.Length)
                 {
                     tile.xIndex = 0;
-                    tile.transform.position = Vector3.forward * tile.transform.position.z + Vector3.right * -1 + Vector3.right * transform.position.x;
+                    tile.transform.position = Vector3.forward * tile.transform.position.z
+                        + Vector3.right * -1 + Vector3.right * transform.position.x;
                 }
             }
         }
@@ -222,7 +234,8 @@ public class TileContainer : MonoBehaviour
             Destroy(selectedTile.unit.gameObject);
         selectedTile.spriteRenderer.sprite = unitData.LevelUnitDatas[selectedTile.level].unitSprites[unitIndex];
 
-        selectedTile.unit = Instantiate(unitData.LevelUnitDatas[selectedTile.level].unitPrefabs[unitIndex], selectedTile.transform.position, Quaternion.identity, selectedTile.transform);
+        selectedTile.unit = Instantiate(unitData.LevelUnitDatas[selectedTile.level].unitPrefabs[unitIndex]
+            , selectedTile.transform.position, Quaternion.identity, selectedTile.transform);
         selectedTile.unit.gameObject.SetActive(false);
     }
 
