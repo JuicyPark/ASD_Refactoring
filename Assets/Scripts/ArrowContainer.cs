@@ -4,104 +4,36 @@ using UnityEngine;
 
 public class ArrowContainer : MonoBehaviour
 {
-    bool[] row_colum = new bool[4]; // 가로_세로
-    int[] rowRand;
-    int[] columRand;
-
-    int rowSize;
-    int columSize;
+    public Color color;
 
     [SerializeField]
-    Vector3[] positions = new Vector3[4];
+    GameObject arrowTilePrefab;
 
-    [SerializeField]
-    Arrow[] arrows;
+    List<GameObject> arrowTiles = new List<GameObject>();
 
-    Quaternion arrowDirect = Quaternion.identity;
-
-    public void GetTileSize(int row, int colum)
+    public void SetArrowColor(Color arrowColor)
     {
-        rowSize = row;
-        columSize = colum;
-        rowRand = new int[rowSize];
-        columRand = new int[columSize];
-
-        for (int i = 0; i < rowRand.Length; i++)
-            rowRand[i] = i;
-        for (int i = 0; i < columRand.Length; i++)
-            columRand[i] = i;
+        color = arrowColor;
+        GetComponentInChildren<SpriteRenderer>().color = color + Color.black;
     }
 
-    public void SetArrowPosition()
+    public void Activate(int arrowSize)
     {
-        Shuffle(rowRand);
-        Shuffle(columRand);
-
-        for (int i = 0; i < row_colum.Length; i++)
+        for (int i = 0; i <= arrowSize; i++)
         {
-            int randomBool = Random.Range(0, 2);
-            row_colum[i] = (randomBool == 1) ? true : false;
-        }
-
-        for (int i = 0; i < row_colum.Length; i++)
-        {
-            int arrowSize = 0;
-
-            if (row_colum[i]) // 가로일때
+            if (arrowTiles.Count <= i)
             {
-                int currentRand = columRand[i];
-                int start_end = Random.Range(0, 2);
-                arrowSize = rowSize;
-
-                if (start_end == 0)
-                {
-                    positions[i].x = -1;
-                    arrowDirect = Quaternion.Euler(Vector3.right * 90f + Vector3.up * 0f); ;
-                }
-                else
-                {
-                    positions[i].x = rowSize;
-                    arrowDirect = Quaternion.Euler(Vector3.right * 90f + Vector3.up * 180f);
-                }
-                positions[i].z = columRand[i];
+                GameObject arrowTile = Instantiate(arrowTilePrefab, Vector3.right * (i + 1), Quaternion.identity, transform);
+                arrowTile.GetComponent<SpriteRenderer>().color = color;
+                arrowTiles.Add(arrowTile);
             }
-            else
-            {
-                int currentRand = rowRand[i];
-                int start_end = Random.Range(0, 2);
-                arrowSize = columSize;
-
-                if (start_end == 0)
-                {
-                    positions[i].z = -1;
-                    arrowDirect = Quaternion.Euler(Vector3.right * 90f + Vector3.up * -90f);
-                }
-                else
-                {
-                    positions[i].z = columSize;
-                    arrowDirect = Quaternion.Euler(Vector3.right * 90f + Vector3.up * 90f);
-                }
-                positions[i].x = rowRand[i];
-            }
-            arrows[i].transform.position = Vector3.zero;
-            arrows[i].transform.rotation = Quaternion.identity;
-            arrows[i].Activate(arrowSize);
-            arrows[i].transform.position = positions[i];
-            arrows[i].transform.rotation = arrowDirect;
-            //Instantiate(arrowPrefab, positions[i], arrowDirect);
+            arrowTiles[i].SetActive(true);
         }
     }
 
-    void Shuffle(int[] rand)
+    void UnActivate()
     {
-        for (int i = 0; i < 10; i++)
-        {
-            int first = Random.Range(0, rand.Length);
-            int second = Random.Range(0, rand.Length);
-
-            int temp = rand[first];
-            rand[first] = rand[second];
-            rand[second] = temp;
-        }
+        foreach(var arrowTile in arrowTiles)
+            arrowTile.SetActive(false);
     }
 }

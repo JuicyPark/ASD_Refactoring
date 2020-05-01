@@ -30,7 +30,7 @@ public class TileContainer : MonoBehaviour
     UnitData unitData;
 
     [SerializeField]
-    ArrowContainer arrowContainer;
+    ArrowSpawnsor arrowContainer;
 
     public void SelectTile(Vector3 position)
     {
@@ -118,7 +118,7 @@ public class TileContainer : MonoBehaviour
         }
 
         arrowContainer.GetTileSize(rowSize, columSize);
-        arrowContainer.SetArrowPosition();
+        arrowContainer.SetArrowContainerPosition();
     }
 
     void ChangeTileIndex(Direction direction)
