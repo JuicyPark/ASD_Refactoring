@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using UnityEditor.Rendering;
 
-public class TileContainer : MonoBehaviour
+public class TileManager : MonoBehaviour
 {
     public Action CompletedMove;
 

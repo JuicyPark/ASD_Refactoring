@@ -22,8 +22,13 @@ public class ArrowSpawnsor : MonoBehaviour
     ArrowContainer arrowContainerPrefab;
     ArrowContainer[] arrowContainers;
 
-    Transform[] startWarp;
-    Transform[] endWarp;
+
+    [SerializeField]
+    Warp warpsPrefab;
+
+    Transform[] startTransforms;
+    Warp[] warps;
+
 
     Quaternion arrowDirect = Quaternion.identity;
 
@@ -46,15 +51,28 @@ public class ArrowSpawnsor : MonoBehaviour
     {
         row_colum = new bool[arrowCount];
         positions = new Vector3[arrowCount];
-        startWarp = new Transform[arrowCount];
-        endWarp = new Transform[arrowCount];
 
         arrowContainers = new ArrowContainer[arrowCount];
+        startTransforms = new Transform[arrowCount + 1];
 
         for (int i = 0; i < arrowContainers.Length; i++)
         {
             arrowContainers[i] = Instantiate(arrowContainerPrefab, Vector3.right * 90f, Quaternion.identity, transform);
             arrowContainers[i].SetArrowColor(arrowColor[i]);
+            startTransforms[i] = arrowContainers[i].transform;
+        }
+
+        CreateWarp();
+    }
+
+    void CreateWarp()
+    {
+        warps = new Warp[arrowCount];
+
+        for (int i = 0; i < arrowCount; i++)
+        {
+            warps[i] = Instantiate(warpsPrefab);
+            warps[i].SetNextTransform(startTransforms[i + 1]);
         }
     }
 
@@ -126,11 +144,11 @@ public class ArrowSpawnsor : MonoBehaviour
             arrowContainers[i].transform.position = Vector3.zero;
             arrowContainers[i].transform.rotation = Quaternion.identity;
             arrowContainers[i].SpawnArrow(arrowSize);
-            startWarp[i] = arrowContainers[i].transform;
-            endWarp[i] = arrowContainers[i].LastArrowTileTransform;
-            
+
             arrowContainers[i].transform.position = positions[i];
             arrowContainers[i].transform.rotation = arrowDirect;
+
+            warps[i].transform.position = arrowContainers[i].LastArrowTileTransform.position;
             yield return arrowContainers[i].CActivate(arrowSize);
         }
     }
