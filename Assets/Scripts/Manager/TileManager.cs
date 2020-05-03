@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using UnityEditor.Rendering;
 
-public class TileContainer : MonoBehaviour
+public class TileManager : MonoBehaviour
 {
     public Action CompletedMove;
 
@@ -30,7 +30,7 @@ public class TileContainer : MonoBehaviour
     UnitData unitData;
 
     [SerializeField]
-    ArrowSpawnsor arrowContainer;
+    ArrowSpawnsor arrowSpawnsor;
 
     public void SelectTile(Vector3 position)
     {
@@ -117,8 +117,8 @@ public class TileContainer : MonoBehaviour
             }
         }
 
-        arrowContainer.GetTileSize(rowSize, columSize);
-        arrowContainer.SetArrowContainerPosition();
+        arrowSpawnsor.GetTileSize(rowSize, columSize);
+        arrowSpawnsor.SetArrowContainerPosition();
     }
 
     void ChangeTileIndex(Direction direction)

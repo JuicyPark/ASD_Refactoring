@@ -5,6 +5,8 @@ using UnityEngine;
 public class ArrowSpawnsor : MonoBehaviour
 {
     [SerializeField]
+    int arrowCount;
+    [SerializeField]
     Color[] arrowColor;
 
     bool[] row_colum;
@@ -19,6 +21,14 @@ public class ArrowSpawnsor : MonoBehaviour
     [SerializeField]
     ArrowContainer arrowContainerPrefab;
     ArrowContainer[] arrowContainers;
+
+
+    [SerializeField]
+    Warp warpsPrefab;
+
+    Transform[] startTransforms;
+    Warp[] warps;
+
 
     Quaternion arrowDirect = Quaternion.identity;
 
@@ -39,14 +49,30 @@ public class ArrowSpawnsor : MonoBehaviour
 
     void Awake()
     {
-        row_colum = new bool[arrowColor.Length];
-        positions = new Vector3[arrowColor.Length];
-        arrowContainers = new ArrowContainer[arrowColor.Length];
+        row_colum = new bool[arrowCount];
+        positions = new Vector3[arrowCount];
+
+        arrowContainers = new ArrowContainer[arrowCount];
+        startTransforms = new Transform[arrowCount + 1];
 
         for (int i = 0; i < arrowContainers.Length; i++)
         {
             arrowContainers[i] = Instantiate(arrowContainerPrefab, Vector3.right * 90f, Quaternion.identity, transform);
             arrowContainers[i].SetArrowColor(arrowColor[i]);
+            startTransforms[i] = arrowContainers[i].transform;
+        }
+
+        CreateWarp();
+    }
+
+    void CreateWarp()
+    {
+        warps = new Warp[arrowCount];
+
+        for (int i = 0; i < arrowCount; i++)
+        {
+            warps[i] = Instantiate(warpsPrefab);
+            warps[i].SetNextTransform(startTransforms[i + 1]);
         }
     }
 
@@ -117,10 +143,13 @@ public class ArrowSpawnsor : MonoBehaviour
 
             arrowContainers[i].transform.position = Vector3.zero;
             arrowContainers[i].transform.rotation = Quaternion.identity;
-            arrowContainers[i].Activate(arrowSize);
+            arrowContainers[i].SpawnArrow(arrowSize);
+
             arrowContainers[i].transform.position = positions[i];
             arrowContainers[i].transform.rotation = arrowDirect;
-            yield return new WaitForSeconds(0.5f);
+
+            warps[i].transform.position = arrowContainers[i].LastArrowTileTransform.position;
+            yield return arrowContainers[i].CActivate(arrowSize);
         }
     }
 }
