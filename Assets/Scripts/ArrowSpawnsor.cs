@@ -5,6 +5,8 @@ using UnityEngine;
 public class ArrowSpawnsor : MonoBehaviour
 {
     [SerializeField]
+    int arrowCount;
+    [SerializeField]
     Color[] arrowColor;
 
     bool[] row_colum;
@@ -19,6 +21,9 @@ public class ArrowSpawnsor : MonoBehaviour
     [SerializeField]
     ArrowContainer arrowContainerPrefab;
     ArrowContainer[] arrowContainers;
+
+    Transform[] startWarp;
+    Transform[] endWarp;
 
     Quaternion arrowDirect = Quaternion.identity;
 
@@ -39,9 +44,12 @@ public class ArrowSpawnsor : MonoBehaviour
 
     void Awake()
     {
-        row_colum = new bool[arrowColor.Length];
-        positions = new Vector3[arrowColor.Length];
-        arrowContainers = new ArrowContainer[arrowColor.Length];
+        row_colum = new bool[arrowCount];
+        positions = new Vector3[arrowCount];
+        startWarp = new Transform[arrowCount];
+        endWarp = new Transform[arrowCount];
+
+        arrowContainers = new ArrowContainer[arrowCount];
 
         for (int i = 0; i < arrowContainers.Length; i++)
         {
@@ -117,10 +125,13 @@ public class ArrowSpawnsor : MonoBehaviour
 
             arrowContainers[i].transform.position = Vector3.zero;
             arrowContainers[i].transform.rotation = Quaternion.identity;
-            arrowContainers[i].Activate(arrowSize);
+            arrowContainers[i].SpawnArrow(arrowSize);
+            startWarp[i] = arrowContainers[i].transform;
+            endWarp[i] = arrowContainers[i].LastArrowTileTransform;
+            
             arrowContainers[i].transform.position = positions[i];
             arrowContainers[i].transform.rotation = arrowDirect;
-            yield return new WaitForSeconds(0.5f);
+            yield return arrowContainers[i].CActivate(arrowSize);
         }
     }
 }
