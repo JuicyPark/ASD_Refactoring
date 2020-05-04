@@ -32,6 +32,9 @@ public class TileManager : MonoBehaviour
     [SerializeField]
     ArrowSpawnsor arrowSpawnsor;
 
+    [SerializeField]
+    StageManager stageManager;
+
     public void SelectTile(Vector3 position)
     {
         RaycastHit hit;
@@ -119,6 +122,7 @@ public class TileManager : MonoBehaviour
 
         arrowSpawnsor.GetTileSize(rowSize, columSize);
         arrowSpawnsor.SetArrowContainerPosition();
+        stageManager.SpawnTransform = arrowSpawnsor.StartTransform;
     }
 
     void ChangeTileIndex(Direction direction)

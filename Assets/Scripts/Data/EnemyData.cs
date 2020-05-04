@@ -8,7 +8,7 @@ using UnityEngine;
 public class EnemyData : ScriptableObject
 {
     public Sprite enemySprites;
-    public Unit enemyPrefab;
+    public Enemy enemyPrefab;
     public int enemyCount;
     public float health;
 }
