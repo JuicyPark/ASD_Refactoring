@@ -28,7 +28,7 @@ public class ArrowSpawnsor : MonoBehaviour
 
     Transform[] startTransforms;
     Warp[] warps;
-
+    public Transform StartTransform { get => startTransforms[0]; }
 
     Quaternion arrowDirect = Quaternion.identity;
 
