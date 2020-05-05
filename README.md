@@ -2,15 +2,16 @@
 
 ![0](https://user-images.githubusercontent.com/31693348/81091380-1f0c5b00-8f3a-11ea-9ef4-57be6bfa1ccc.png)
 
-### 게임소개
+## 게임소개
 
 Animal Swipe Defence(애니멀 스와이프 디펜스)는 간단한 스와이프 동작을 이용하여 동물들을 생산, 합체 시켜나가는 퍼즐 디펜스 게임입니다.
 
 
 
-### 게임 구조
 
-**Managers**
+## 게임 구조
+
+#### Managers
 
 ![1](https://user-images.githubusercontent.com/31693348/81091324-08660400-8f3a-11ea-9f4c-0d1987a90b1e.png)
 
@@ -20,7 +21,7 @@ Animal Swipe Defence(애니멀 스와이프 디펜스)는 간단한 스와이프
 
 
 
-**Stage Data**
+#### Stage Data
 
 ![2](https://user-images.githubusercontent.com/31693348/81091360-14ea5c80-8f3a-11ea-933b-19aa11757878.png)
 
@@ -30,7 +31,7 @@ Animal Swipe Defence(애니멀 스와이프 디펜스)는 간단한 스와이프
 
 
 
-**Unit, Enemy**
+#### Unit, Enemy
 
 ![6](https://user-images.githubusercontent.com/31693348/81091402-27649600-8f3a-11ea-9bd5-34b3e390a029.png)
 
@@ -40,7 +41,7 @@ Animal Swipe Defence(애니멀 스와이프 디펜스)는 간단한 스와이프
 
 
 
-### Refactoring ISSUE
+## Refactoring ISSUE
 
 - Lobby
   - UI
