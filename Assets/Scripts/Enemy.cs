@@ -16,6 +16,13 @@ public class Enemy : MonoBehaviour
         currentHealth = health;
     }
 
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth < 0)
+            Destroy(gameObject);
+    }
+
     void Update()
     {
         transform.Translate(0, 0, speed * Time.deltaTime);

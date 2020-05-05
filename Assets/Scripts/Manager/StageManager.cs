@@ -31,6 +31,7 @@ public class StageManager : MonoBehaviour
 
     IEnumerator CStartStage()
     {
+        yield return new WaitForSeconds(1f);
         for (int i = 0; i < enemyDatas[ResourceManager.Instance.level].enemyCount; i++)
         {
             Enemy enemy = Instantiate(enemyDatas[ResourceManager.Instance.level].enemyPrefab,

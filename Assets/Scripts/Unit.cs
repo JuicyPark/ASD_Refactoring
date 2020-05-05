@@ -4,15 +4,42 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    float damage = 10f;
+    [SerializeField]
+    float attackDelay = 0.5f;
+    float colapseTime = 0;
 
-    // Update is called once per frame
+    bool attackable = true;
+
+    [SerializeField]
+    Animator animator;
+
     void Update()
     {
-        
+        if(colapseTime < attackDelay)
+        {
+            colapseTime += Time.deltaTime;
+        }
+        else
+        {
+            colapseTime = attackDelay;
+            attackable = true;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (!attackable)
+            return;
+        Attack(other);
+    }
+
+    void Attack(Collider enemy)
+    {
+        transform.LookAt(enemy.transform);
+        animator.SetTrigger("isAttack");
+        enemy.GetComponent<Enemy>().TakeDamage(damage);
+        attackable = false;
     }
 }
