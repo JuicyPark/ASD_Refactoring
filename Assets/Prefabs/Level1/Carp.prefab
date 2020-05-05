@@ -87,6 +87,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3848254477787357464}
   - component: {fileID: 2286113304008237742}
+  - component: {fileID: 7542889003203431830}
+  - component: {fileID: 4483089279242118915}
   m_Layer: 0
   m_Name: Carp
   m_TagString: Untagged
@@ -121,3 +123,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8379ec23a3a1be34e8215fbb27f443ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
+  attackDelay: 0.5
+  animator: {fileID: 4483089279242118915}
+--- !u!135 &7542889003203431830
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4234024061893241389}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.8
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &4483089279242118915
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4234024061893241389}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eff7f0bac87b6134cacb2ed50c70e64f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

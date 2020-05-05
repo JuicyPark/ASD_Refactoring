@@ -8,7 +8,10 @@ public class GameManager : MonoBehaviour
     TouchController touchController;
 
     [SerializeField]
-    TileManager tileContainer;
+    TileManager tileManager;
+
+    [SerializeField]
+    UIManager uiManager;
 
     void Start()
     {
@@ -22,17 +25,23 @@ public class GameManager : MonoBehaviour
 
     void BindEvents()
     {
-        touchController.BeganTouching += tileContainer.SelectTile;
-        touchController.EndedTouching += tileContainer.TouchTile;
-        touchController.SwipedTouching += tileContainer.SelectTiles;
-        tileContainer.CompletedMove += touchController.SetTouchable;
+        touchController.BeganTouching += tileManager.SelectTile;
+        touchController.EndedTouching += tileManager.TouchTile;
+        touchController.SwipedTouching += tileManager.SwipeTile;
+        tileManager.CompletedMove += touchController.SetTouchable;
+        tileManager.CreatedUnit += uiManager.UpdateGold;
+        tileManager.SwipedTile += uiManager.UpdateStep;
+        tileManager.stageManager.ClickStartButton += uiManager.SetCameraBattleMode;
     }
 
     void UnBindEvents()
     {
-        touchController.BeganTouching -= tileContainer.SelectTile;
-        touchController.EndedTouching -= tileContainer.TouchTile;
-        touchController.SwipedTouching -= tileContainer.SelectTiles;
-        tileContainer.CompletedMove -= touchController.SetTouchable;
+        touchController.BeganTouching -= tileManager.SelectTile;
+        touchController.EndedTouching -= tileManager.TouchTile;
+        touchController.SwipedTouching -= tileManager.SwipeTile;
+        tileManager.CompletedMove -= touchController.SetTouchable;
+        tileManager.CreatedUnit -= uiManager.UpdateGold;
+        tileManager.SwipedTile -= uiManager.UpdateStep;
+        tileManager.stageManager.ClickStartButton -= uiManager.SetCameraBattleMode;
     }
 }
