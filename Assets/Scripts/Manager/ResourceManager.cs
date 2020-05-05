@@ -5,7 +5,9 @@ using UnityEngine;
 public class ResourceManager : Singleton<ResourceManager>
 {
     public int gold = 20;
+    public int maxStep = 20;
     public int step = 20;
+    public int level = 1;
 
     [SerializeField]
     int goldCost = 5;

@@ -1,12 +1,16 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEditor.Rendering;
 
 public class TileManager : MonoBehaviour
 {
     public Action CompletedMove;
+    public Action CreatedUnit;
+    public Action SwipedTile;
 
+    public StageManager stageManager;
+    
     [SerializeField]
     Tile tilePrefab;
     Tile selectedTile;
@@ -32,11 +36,13 @@ public class TileManager : MonoBehaviour
     [SerializeField]
     ArrowSpawnsor arrowSpawnsor;
 
-    [SerializeField]
-    StageManager stageManager;
+    List<Unit> units = new List<Unit>();
 
     public void SelectTile(Vector3 position)
     {
+        if (stageManager.IsStarted)
+            return;
+
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(position);
         if (Physics.Raycast(ray.origin, ray.direction, out hit))
@@ -48,14 +54,20 @@ public class TileManager : MonoBehaviour
 
     public void TouchTile()
     {
+        if (stageManager.IsStarted)
+            return;
+
         CompletedMove?.Invoke();
 
         if (selectedTile != null)
             ActivateTile();
     }
 
-    public void SelectTiles(Direction direction)
+    public void SwipeTile(Direction direction)
     {
+        if (stageManager.IsStarted)
+            return;
+
         if (selectedTile == null)
         {
             CompletedMove?.Invoke();
@@ -66,6 +78,7 @@ public class TileManager : MonoBehaviour
             return;
 
         ResourceManager.Instance.UseStep();
+        SwipedTile?.Invoke();
 
         if (direction == Direction.UP || direction == Direction.DOWN)
         {
@@ -98,6 +111,12 @@ public class TileManager : MonoBehaviour
         StartCoroutine(CMoveSwipeContainer(direction));
     }
 
+    public void AllUnitSpawn()
+    {
+        foreach(var unit in units)
+            unit.gameObject.SetActive(true);
+    }
+
     void Start()
     {
         rowTiles = new Tile[rowSize];
@@ -123,6 +142,8 @@ public class TileManager : MonoBehaviour
         arrowSpawnsor.GetTileSize(rowSize, columSize);
         arrowSpawnsor.SetArrowContainerPosition();
         stageManager.SpawnTransform = arrowSpawnsor.StartTransform;
+
+        stageManager.ClickStartButton += AllUnitSpawn;
     }
 
     void ChangeTileIndex(Direction direction)
@@ -215,7 +236,7 @@ public class TileManager : MonoBehaviour
         return Vector3.zero;
     }
 
-    Tile FindNearSameTile()
+    Tile FindNearEqualTile()
     {
         Collider[] hitColliders = Physics.OverlapSphere(selectedTile.transform.position, 0.5f, blockLayerMask);
         foreach (var nearTileCollider in hitColliders)
@@ -235,18 +256,25 @@ public class TileManager : MonoBehaviour
     void SetUnit(int unitIndex)
     {
         if (selectedTile.unit != null)
+        {
+            units.Remove(selectedTile.unit);
             Destroy(selectedTile.unit.gameObject);
+        }
         selectedTile.spriteRenderer.sprite = unitData.LevelUnitDatas[selectedTile.level].unitSprites[unitIndex];
 
         selectedTile.unit = Instantiate(unitData.LevelUnitDatas[selectedTile.level].unitPrefabs[unitIndex]
             , selectedTile.transform.position, Quaternion.identity, selectedTile.transform);
+        units.Add(selectedTile.unit);
         selectedTile.unit.gameObject.SetActive(false);
     }
 
     void InitTile(Tile tile)
     {
         if (tile.unit != null)
+        {
+            units.Remove(tile.unit);
             Destroy(tile.unit.gameObject);
+        }
         tile.spriteRenderer.sprite = unitData.noneSelectTileSprite;
         tile.level = 0;
     }
@@ -276,10 +304,11 @@ public class TileManager : MonoBehaviour
 
             ResourceManager.Instance.UseGold();
             CreateUnit();
+            CreatedUnit?.Invoke();
         }
         else
         {
-            Tile nearTile = FindNearSameTile();
+            Tile nearTile = FindNearEqualTile();
             if (nearTile != null)
             {
                 MergeUnit(nearTile);

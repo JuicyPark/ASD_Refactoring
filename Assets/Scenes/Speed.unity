@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 243091953}
   - component: {fileID: 243091952}
   m_Layer: 5
-  m_Name: Battle_Button
+  m_Name: Start_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -334,8 +334,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: OnBattle
+      - m_Target: {fileID: 1072243875}
+        m_MethodName: StartStage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -543,7 +543,7 @@ GameObject:
   - component: {fileID: 380063885}
   - component: {fileID: 380063886}
   m_Layer: 5
-  m_Name: Resource_Panel
+  m_Name: Gold_Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -769,7 +769,7 @@ GameObject:
   - component: {fileID: 544010558}
   - component: {fileID: 544010557}
   m_Layer: 5
-  m_Name: Walk_Text
+  m_Name: Step_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -968,6 +968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d54872f3f59c6bd44afc50c346575d06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageManager: {fileID: 1072243875}
   tilePrefab: {fileID: 3626266269168447209, guid: b6690a458066433449697109c5508814,
     type: 3}
   rowSize: 7
@@ -978,7 +979,6 @@ MonoBehaviour:
     m_Bits: 512
   unitData: {fileID: 11400000, guid: 2cf436c093aa5ba469c6bb6b73d15ff5, type: 2}
   arrowSpawnsor: {fileID: 1815588579}
-  stageManager: {fileID: 1072243875}
 --- !u!1 &657584775
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,7 +991,7 @@ GameObject:
   - component: {fileID: 657584778}
   - component: {fileID: 657584777}
   m_Layer: 5
-  m_Name: Resource_Text
+  m_Name: Gold_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1325,6 +1325,7 @@ GameObject:
   - component: {fileID: 853618359}
   - component: {fileID: 853618361}
   - component: {fileID: 853618358}
+  - component: {fileID: 853618362}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1345,7 +1346,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gold: 20
+  maxStep: 20
   step: 20
+  level: 1
   goldCost: 5
   stepCost: 1
 --- !u!114 &853618359
@@ -1361,7 +1364,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchController: {fileID: 853618361}
-  tileContainer: {fileID: 651877177}
+  tileManager: {fileID: 651877177}
+  uiManager: {fileID: 853618362}
 --- !u!4 &853618360
 Transform:
   m_ObjectHideFlags: 0
@@ -1389,6 +1393,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchSensitive: 200
+--- !u!114 &853618362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853618357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e729f8e07f1778847bea41cd5b0db92e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goldText: {fileID: 657584777}
+  stepText: {fileID: 544010557}
+  levelText: {fileID: 203445990}
+  cameraAnimator: {fileID: 519420030}
 --- !u!1 &874494069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,7 +1898,7 @@ GameObject:
   - component: {fileID: 1279808646}
   - component: {fileID: 1279808647}
   m_Layer: 5
-  m_Name: Walk_Panel
+  m_Name: Step_Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3186,7 +3206,7 @@ GameObject:
   - component: {fileID: 1953288208}
   - component: {fileID: 1953288207}
   m_Layer: 5
-  m_Name: Walk_Image
+  m_Name: Step_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3432,7 +3452,7 @@ GameObject:
   - component: {fileID: 1982399909}
   - component: {fileID: 1982399908}
   m_Layer: 5
-  m_Name: Resource_Image
+  m_Name: Gold_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
