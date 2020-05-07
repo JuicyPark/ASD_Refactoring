@@ -1,4 +1,4 @@
-# 🐶Animal Swipe Defence🐱
+# 🐶Animal Swipe Defence🐱 (리펙토링)
 
 ## 다운로드 링크
 https://play.google.com/store/apps/details?id=com.dontcryjunsu.asd
